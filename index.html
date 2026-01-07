@@ -7,28 +7,35 @@
     <meta name="description" content="Professional network speed testing tool">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Lexend:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary: #00f260;
             --primary-dark: #00d055;
+            --primary-glow: rgba(0, 242, 96, 0.3);
             --secondary: #0575e6;
+            --secondary-light: #1e8ef7;
             --accent: #ff6b35;
+            --accent-glow: rgba(255, 107, 53, 0.3);
             --bg-dark: #0a0e27;
-            --bg-card: #151933;
-            --bg-elevated: #1d2241;
+            --bg-card: #12162e;
+            --bg-elevated: #1a1f3f;
+            --bg-hover: #1e2347;
             --text-primary: #ffffff;
-            --text-secondary: #a0aec0;
+            --text-secondary: #cbd5e1;
             --text-muted: #64748b;
-            --border: rgba(255, 255, 255, 0.08);
+            --border: rgba(255, 255, 255, 0.06);
+            --border-strong: rgba(255, 255, 255, 0.12);
             --success: #10b981;
             --warning: #f59e0b;
             --error: #ef4444;
             --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
             --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.4);
-            --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.5);
+            --shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.5);
+            --shadow-glow: 0 0 30px rgba(0, 242, 96, 0.2);
             --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
             --transition-base: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-slow: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         * {
@@ -38,8 +45,8 @@
         }
 
         body {
-            font-family: 'Lexend', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: linear-gradient(135deg, var(--bg-dark) 0%, #1a1f3a 100%);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, var(--bg-dark) 0%, #0f1428 50%, #1a1f3a 100%);
             color: var(--text-primary);
             min-height: 100vh;
             display: flex;
@@ -51,7 +58,7 @@
             overflow-x: hidden;
         }
 
-        /* Animated background particles */
+        /* Enhanced animated background */
         .bg-particles {
             position: fixed;
             top: 0;
@@ -60,85 +67,153 @@
             height: 100%;
             pointer-events: none;
             z-index: 0;
-            opacity: 0.15;
+            opacity: 0.2;
         }
 
         .particle {
             position: absolute;
-            background: var(--primary);
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
             border-radius: 50%;
             animation: float 20s infinite ease-in-out;
+            filter: blur(1px);
         }
 
         @keyframes float {
-            0%, 100% { transform: translateY(0) translateX(0) scale(1); }
-            25% { transform: translateY(-30px) translateX(20px) scale(1.1); }
-            50% { transform: translateY(-60px) translateX(-20px) scale(0.9); }
-            75% { transform: translateY(-30px) translateX(10px) scale(1.05); }
+            0%, 100% { transform: translateY(0) translateX(0) scale(1); opacity: 0.3; }
+            25% { transform: translateY(-40px) translateX(30px) scale(1.2); opacity: 0.6; }
+            50% { transform: translateY(-80px) translateX(-30px) scale(0.8); opacity: 0.4; }
+            75% { transform: translateY(-40px) translateX(15px) scale(1.1); opacity: 0.5; }
+        }
+
+        /* Ambient glow effect */
+        .bg-glow {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, var(--primary-glow) 0%, transparent 70%);
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: 0;
+            animation: pulse-glow 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { opacity: 0.3; transform: translate(-50%, -50%) scale(1); }
+            50% { opacity: 0.5; transform: translate(-50%, -50%) scale(1.1); }
         }
 
         .container {
             background: var(--bg-card);
-            padding: 3rem;
-            border-radius: 24px;
-            box-shadow: var(--shadow-lg);
+            padding: 3.5rem;
+            border-radius: 32px;
+            box-shadow: var(--shadow-lg), var(--shadow-glow);
             width: 100%;
-            max-width: 480px;
+            max-width: 520px;
             border: 1px solid var(--border);
             position: relative;
             z-index: 1;
-            backdrop-filter: blur(10px);
-            animation: slideIn 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            backdrop-filter: blur(20px);
+            animation: slideIn 0.8s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         @keyframes slideIn {
             from {
                 opacity: 0;
-                transform: translateY(20px);
+                transform: translateY(30px) scale(0.95);
             }
             to {
                 opacity: 1;
-                transform: translateY(0);
+                transform: translateY(0) scale(1);
             }
         }
 
-        /* Header */
+        /* Header with gradient text */
         .header {
             text-align: center;
-            margin-bottom: 2.5rem;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .logo-container {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .logo-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 16px var(--primary-glow);
+            animation: rotate-pulse 3s ease-in-out infinite;
+        }
+
+        @keyframes rotate-pulse {
+            0%, 100% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(5deg) scale(1.05); }
+        }
+
+        .logo-icon svg {
+            width: 28px;
+            height: 28px;
+            stroke: white;
+            stroke-width: 2;
+            fill: none;
         }
 
         h1 {
-            font-size: 2rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            font-size: 2.25rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 50%, var(--primary) 100%);
+            background-size: 200% auto;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
             margin-bottom: 0.5rem;
-            letter-spacing: -0.02em;
+            letter-spacing: -0.03em;
+            animation: gradient-shift 3s ease infinite;
+        }
+
+        @keyframes gradient-shift {
+            0%, 100% { background-position: 0% center; }
+            50% { background-position: 100% center; }
         }
 
         .subtitle {
             color: var(--text-secondary);
-            font-size: 0.875rem;
-            font-weight: 400;
+            font-size: 0.9rem;
+            font-weight: 500;
+            letter-spacing: 0.02em;
         }
 
-        /* Status badge */
+        /* Enhanced status badge */
         .status-badge {
             display: inline-flex;
             align-items: center;
-            gap: 0.5rem;
-            padding: 0.5rem 1rem;
+            gap: 0.625rem;
+            padding: 0.625rem 1.25rem;
             background: var(--bg-elevated);
-            border-radius: 12px;
+            border-radius: 16px;
             font-size: 0.75rem;
             font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 0.05em;
-            margin-top: 0.75rem;
-            border: 1px solid var(--border);
+            letter-spacing: 0.06em;
+            margin-top: 1rem;
+            border: 1px solid var(--border-strong);
+            transition: all var(--transition-base);
+        }
+
+        .status-badge:hover {
+            background: var(--bg-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
         }
 
         .status-indicator {
@@ -146,35 +221,43 @@
             height: 8px;
             border-radius: 50%;
             background: var(--success);
-            animation: pulse 2s infinite;
+            box-shadow: 0 0 12px var(--success);
+            animation: pulse-indicator 2s infinite;
         }
 
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.4; }
+        @keyframes pulse-indicator {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(1.3); }
         }
 
-        /* Progress Circle */
+        /* Progress Circle Enhancement */
         .progress-container {
             position: relative;
-            width: 200px;
-            height: 200px;
-            margin: 0 auto 2.5rem;
+            width: 240px;
+            height: 240px;
+            margin: 0 auto 3rem;
+            filter: drop-shadow(0 8px 24px rgba(0, 242, 96, 0.3));
         }
 
         .progress-ring {
             transform: rotate(-90deg);
-            filter: drop-shadow(0 4px 12px rgba(0, 242, 96, 0.3));
+            transition: filter var(--transition-base);
+        }
+
+        .progress-ring.active {
+            filter: drop-shadow(0 0 20px rgba(0, 242, 96, 0.6));
         }
 
         .progress-ring__bg {
             stroke: var(--bg-elevated);
+            stroke-width: 12;
         }
 
         .progress-ring__circle {
             transition: stroke-dashoffset 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             stroke: url(#gradient);
-            filter: drop-shadow(0 0 8px rgba(0, 242, 96, 0.6));
+            stroke-width: 12;
+            stroke-linecap: round;
         }
 
         .speed-display {
@@ -187,15 +270,25 @@
 
         .speed-value {
             font-family: 'JetBrains Mono', monospace;
-            font-size: 3rem;
+            font-size: 3.5rem;
             font-weight: 700;
             display: block;
             line-height: 1;
-            letter-spacing: -0.02em;
+            letter-spacing: -0.03em;
             background: linear-gradient(135deg, var(--text-primary) 0%, var(--text-secondary) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            transition: all var(--transition-base);
+        }
+
+        .speed-value.pulse {
+            animation: value-pulse 0.5s ease-out;
+        }
+
+        @keyframes value-pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
         }
 
         .speed-unit {
@@ -204,64 +297,123 @@
             color: var(--text-muted);
             text-transform: uppercase;
             font-weight: 600;
-            letter-spacing: 0.1em;
-            margin-top: 0.5rem;
+            letter-spacing: 0.12em;
+            margin-top: 0.75rem;
             display: block;
         }
 
-        /* Metrics Grid */
+        /* Enhanced Metrics Grid */
         .metrics-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 1rem;
             margin-bottom: 2rem;
-            padding: 1.5rem;
+            padding: 1.75rem;
             background: var(--bg-elevated);
-            border-radius: 16px;
-            border: 1px solid var(--border);
+            border-radius: 20px;
+            border: 1px solid var(--border-strong);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .metrics-grid::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--primary), transparent);
+            opacity: 0;
+            transition: opacity var(--transition-base);
+        }
+
+        .metrics-grid.active::before {
+            opacity: 1;
         }
 
         .metric {
             text-align: center;
-            padding: 0.75rem;
-            border-radius: 12px;
+            padding: 1rem;
+            border-radius: 14px;
             transition: all var(--transition-base);
             cursor: default;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .metric::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, var(--primary-glow), var(--secondary));
+            opacity: 0;
+            transition: opacity var(--transition-base);
+            border-radius: 14px;
+        }
+
+        .metric:hover::before {
+            opacity: 0.05;
         }
 
         .metric:hover {
             background: rgba(255, 255, 255, 0.03);
-            transform: translateY(-2px);
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
         }
 
         .metric-label {
             font-size: 0.75rem;
             color: var(--text-muted);
             text-transform: uppercase;
-            letter-spacing: 0.05em;
+            letter-spacing: 0.06em;
             font-weight: 600;
-            margin-bottom: 0.5rem;
-            display: block;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.375rem;
+            position: relative;
+            z-index: 1;
         }
 
         .metric-value {
             font-family: 'JetBrains Mono', monospace;
-            font-size: 1.5rem;
+            font-size: 1.75rem;
             font-weight: 700;
             color: var(--primary);
             display: block;
             line-height: 1;
+            position: relative;
+            z-index: 1;
+            text-shadow: 0 0 20px var(--primary-glow);
+            transition: all var(--transition-base);
+        }
+
+        .metric-value.update {
+            animation: metric-update 0.5s ease-out;
+        }
+
+        @keyframes metric-update {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.2); opacity: 0.7; }
+            100% { transform: scale(1); opacity: 1; }
         }
 
         .metric-unit {
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.625rem;
             color: var(--text-muted);
-            margin-top: 0.25rem;
+            margin-top: 0.375rem;
             display: block;
+            position: relative;
+            z-index: 1;
         }
 
-        /* Additional stats */
+        /* Enhanced stats row */
         .stats-row {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -271,28 +423,60 @@
 
         .stat-card {
             background: var(--bg-elevated);
-            padding: 1rem;
-            border-radius: 12px;
+            padding: 1.25rem;
+            border-radius: 16px;
             border: 1px solid var(--border);
+            transition: all var(--transition-base);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, var(--primary-glow), transparent);
+            opacity: 0;
+            transition: opacity var(--transition-base);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+            border-color: var(--border-strong);
+        }
+
+        .stat-card:hover::before {
+            opacity: 0.1;
         }
 
         .stat-label {
             font-size: 0.75rem;
             color: var(--text-muted);
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.75rem;
             display: flex;
             align-items: center;
             gap: 0.5rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            position: relative;
+            z-index: 1;
         }
 
         .stat-value {
             font-family: 'JetBrains Mono', monospace;
-            font-size: 1.125rem;
+            font-size: 1.25rem;
             font-weight: 600;
             color: var(--text-primary);
+            position: relative;
+            z-index: 1;
         }
 
-        /* Button */
+        /* Enhanced Buttons */
         .button-container {
             display: flex;
             flex-direction: column;
@@ -303,18 +487,18 @@
             width: 100%;
             background: linear-gradient(135deg, var(--secondary), var(--primary));
             border: none;
-            padding: 1rem 2rem;
-            border-radius: 12px;
+            padding: 1.125rem 2rem;
+            border-radius: 16px;
             color: white;
             font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
             transition: all var(--transition-base);
             outline: none;
-            box-shadow: 0 4px 16px rgba(0, 242, 96, 0.3);
+            box-shadow: 0 4px 20px rgba(0, 242, 96, 0.3), 0 0 0 0 rgba(0, 242, 96, 0.4);
             position: relative;
             overflow: hidden;
-            font-family: 'Lexend', sans-serif;
+            font-family: 'Inter', sans-serif;
             letter-spacing: 0.02em;
         }
 
@@ -326,23 +510,23 @@
             width: 0;
             height: 0;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.25);
             transform: translate(-50%, -50%);
             transition: width 0.6s, height 0.6s;
         }
 
         button:hover::before {
-            width: 300px;
-            height: 300px;
+            width: 400px;
+            height: 400px;
         }
 
         button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0, 242, 96, 0.4);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 28px rgba(0, 242, 96, 0.5), 0 0 0 4px rgba(0, 242, 96, 0.1);
         }
 
         button:active {
-            transform: translateY(0);
+            transform: translateY(-1px);
         }
 
         button:disabled {
@@ -350,39 +534,46 @@
             cursor: not-allowed;
             transform: none;
             box-shadow: none;
-            opacity: 0.6;
+            opacity: 0.5;
         }
 
         button span {
             position: relative;
             z-index: 1;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
         .secondary-button {
             background: var(--bg-elevated);
             box-shadow: none;
-            border: 1px solid var(--border);
-            font-size: 0.875rem;
-            padding: 0.75rem 1.5rem;
+            border: 1px solid var(--border-strong);
+            font-size: 0.9rem;
+            padding: 0.875rem 1.5rem;
         }
 
         .secondary-button:hover {
-            background: rgba(255, 255, 255, 0.05);
-            box-shadow: none;
+            background: var(--bg-hover);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            border-color: var(--primary);
         }
 
-        /* Progress bar for stages */
+        /* Enhanced progress steps */
         .test-progress {
             display: flex;
-            gap: 0.5rem;
-            margin-bottom: 1.5rem;
+            gap: 0.75rem;
+            margin-bottom: 2rem;
+            padding: 0.5rem;
+            background: var(--bg-elevated);
+            border-radius: 12px;
         }
 
         .progress-step {
             flex: 1;
-            height: 4px;
-            background: var(--bg-elevated);
-            border-radius: 2px;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 3px;
             overflow: hidden;
             position: relative;
         }
@@ -392,37 +583,53 @@
             background: linear-gradient(90deg, var(--secondary), var(--primary));
             width: 0%;
             transition: width 0.3s ease;
-            border-radius: 2px;
+            border-radius: 3px;
+            box-shadow: 0 0 10px var(--primary-glow);
         }
 
         .progress-step.active .progress-step-fill {
             width: 100%;
+            animation: shimmer 1.5s ease-in-out infinite;
         }
 
-        /* Error message */
+        @keyframes shimmer {
+            0% { opacity: 0.6; }
+            50% { opacity: 1; }
+            100% { opacity: 0.6; }
+        }
+
+        /* Enhanced error message */
         .error-message {
-            background: rgba(239, 68, 68, 0.1);
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(239, 68, 68, 0.05));
             border: 1px solid rgba(239, 68, 68, 0.3);
             color: var(--error);
-            padding: 1rem;
-            border-radius: 12px;
-            margin-bottom: 1rem;
+            padding: 1.125rem;
+            border-radius: 16px;
+            margin-bottom: 1.5rem;
             font-size: 0.875rem;
             display: none;
-            animation: shake 0.4s;
+            animation: shake 0.4s, fadeIn 0.3s;
+            backdrop-filter: blur(10px);
         }
 
         .error-message.show {
-            display: block;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
         }
 
         @keyframes shake {
             0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-8px); }
-            75% { transform: translateX(8px); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
         }
 
-        /* Info tooltip */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Enhanced info icon */
         .info-icon {
             display: inline-flex;
             align-items: center;
@@ -430,41 +637,83 @@
             width: 16px;
             height: 16px;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.08);
             font-size: 0.625rem;
             cursor: help;
             border: 1px solid var(--border);
+            transition: all var(--transition-fast);
+            font-weight: 700;
+        }
+
+        .info-icon:hover {
+            background: var(--primary);
+            border-color: var(--primary);
+            transform: scale(1.2);
+            box-shadow: 0 0 12px var(--primary-glow);
         }
 
         /* Loading animation */
         .spinner {
             display: inline-block;
-            width: 16px;
-            height: 16px;
-            border: 2px solid rgba(255, 255, 255, 0.3);
+            width: 18px;
+            height: 18px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
             border-top-color: white;
             border-radius: 50%;
-            animation: spin 0.8s linear infinite;
+            animation: spin 0.6s linear infinite;
         }
 
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
 
-        /* Server location */
+        /* Enhanced server info */
         .server-info {
             text-align: center;
-            margin-top: 1.5rem;
-            padding-top: 1.5rem;
+            margin-top: 2rem;
+            padding-top: 2rem;
             border-top: 1px solid var(--border);
             color: var(--text-muted);
             font-size: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
         }
 
         .server-info span {
             color: var(--text-secondary);
             font-weight: 600;
+            padding: 0.25rem 0.75rem;
+            background: var(--bg-elevated);
+            border-radius: 8px;
+            border: 1px solid var(--border);
         }
+
+        /* Quality indicator */
+        .quality-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: var(--bg-elevated);
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-top: 1rem;
+            border: 1px solid var(--border);
+        }
+
+        .quality-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .quality-excellent { background: var(--success); box-shadow: 0 0 10px var(--success); }
+        .quality-good { background: var(--primary); box-shadow: 0 0 10px var(--primary); }
+        .quality-fair { background: var(--warning); box-shadow: 0 0 10px var(--warning); }
+        .quality-poor { background: var(--error); box-shadow: 0 0 10px var(--error); }
 
         /* Accessibility */
         .sr-only {
@@ -486,63 +735,56 @@
             }
 
             h1 {
-                font-size: 1.5rem;
+                font-size: 1.75rem;
             }
 
             .progress-container {
-                width: 160px;
-                height: 160px;
+                width: 200px;
+                height: 200px;
             }
 
             .speed-value {
-                font-size: 2.5rem;
+                font-size: 2.75rem;
             }
 
             .metrics-grid {
                 gap: 0.75rem;
-                padding: 1rem;
+                padding: 1.25rem;
             }
 
             .metric-value {
-                font-size: 1.25rem;
-            }
-        }
-
-        /* Dark theme optimizations */
-        @media (prefers-color-scheme: light) {
-            :root {
-                --bg-dark: #f8fafc;
-                --bg-card: #ffffff;
-                --bg-elevated: #f1f5f9;
-                --text-primary: #0f172a;
-                --text-secondary: #475569;
-                --text-muted: #64748b;
-                --border: rgba(0, 0, 0, 0.08);
+                font-size: 1.5rem;
             }
 
-            body {
-                background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-            }
-
-            .progress-ring__bg {
-                stroke: #e2e8f0;
+            .logo-icon {
+                width: 42px;
+                height: 42px;
             }
         }
 
         /* Print styles */
         @media print {
             .button-container,
-            .bg-particles {
+            .bg-particles,
+            .bg-glow {
                 display: none;
             }
         }
     </style>
 </head>
 <body>
+    <div class="bg-glow" aria-hidden="true"></div>
     <div class="bg-particles" id="particles" aria-hidden="true"></div>
 
     <div class="container" role="main">
         <header class="header">
+            <div class="logo-container">
+                <div class="logo-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M13 2L3 14h8l-1 8 10-12h-8l1-8z"/>
+                    </svg>
+                </div>
+            </div>
             <h1>NetSpeed Pro</h1>
             <p class="subtitle">Enterprise Network Diagnostics</p>
             <div class="status-badge" role="status" aria-live="polite">
@@ -551,7 +793,14 @@
             </div>
         </header>
 
-        <div class="error-message" id="errorMessage" role="alert" aria-live="assertive"></div>
+        <div class="error-message" id="errorMessage" role="alert" aria-live="assertive">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="8" x2="12" y2="12"></line>
+                <line x1="12" y1="16" x2="12.01" y2="16"></line>
+            </svg>
+            <span id="errorText"></span>
+        </div>
 
         <div class="test-progress" aria-label="Test progress">
             <div class="progress-step" id="step1">
@@ -566,15 +815,16 @@
         </div>
 
         <div class="progress-container">
-            <svg class="progress-ring" width="200" height="200" aria-hidden="true">
+            <svg class="progress-ring" width="240" height="240" aria-hidden="true">
                 <defs>
                     <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
                         <stop offset="0%" style="stop-color:var(--secondary);stop-opacity:1" />
-                        <stop offset="100%" style="stop-color:var(--primary);stop-opacity:1" />
+                        <stop offset="50%" style="stop-color:var(--primary);stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:var(--secondary);stop-opacity:1" />
                     </linearGradient>
                 </defs>
-                <circle class="progress-ring__bg" stroke-width="10" fill="transparent" r="80" cx="100" cy="100"/>
-                <circle class="progress-ring__circle" stroke-width="10" fill="transparent" r="80" cx="100" cy="100"/>
+                <circle class="progress-ring__bg" fill="transparent" r="90" cx="120" cy="120"/>
+                <circle class="progress-ring__circle" fill="transparent" r="90" cx="120" cy="120"/>
             </svg>
             <div class="speed-display">
                 <span class="speed-value" id="mainDisplay" aria-live="polite">0.0</span>
@@ -582,7 +832,7 @@
             </div>
         </div>
 
-        <div class="metrics-grid">
+        <div class="metrics-grid" id="metricsGrid">
             <div class="metric">
                 <span class="metric-label">
                     Ping
@@ -626,6 +876,8 @@
             </div>
         </div>
 
+        <div id="qualityBadgeContainer"></div>
+
         <div class="button-container">
             <button id="startBtn" onclick="runSpeedTest()" aria-label="Start speed test">
                 <span id="buttonText">Start Test</span>
@@ -645,20 +897,13 @@
         // CONFIGURATION
         // ==========================================
         const CONFIG = {
-            // Cloudflare endpoints (CORS enabled)
             testFileUrl: 'https://speed.cloudflare.com/__down?bytes=',
             uploadEndpoint: 'https://speed.cloudflare.com/__up',
-            
             testFileSizes: {
-                // Optimized for modern connections
-                download: 52428800, // 50 MB
-                upload: 10485760,   // 10 MB
+                download: 52428800,
+                upload: 10485760,
             },
-            
-            // Test parameters
-            pingAttempts: 10,  // Higher count for better packet loss accuracy
-            
-            // Timeouts
+            pingAttempts: 10,
             requestTimeout: 30000,
         };
 
@@ -685,15 +930,16 @@
 
         function initializeBackgroundParticles() {
             const container = document.getElementById('particles');
-            const particleCount = 20;
+            const particleCount = 25;
             
             for (let i = 0; i < particleCount; i++) {
                 const particle = document.createElement('div');
                 particle.className = 'particle';
                 particle.style.left = Math.random() * 100 + '%';
                 particle.style.top = Math.random() * 100 + '%';
-                particle.style.width = (Math.random() * 4 + 2) + 'px';
-                particle.style.height = particle.style.width;
+                const size = (Math.random() * 6 + 3) + 'px';
+                particle.style.width = size;
+                particle.style.height = size;
                 particle.style.animationDelay = Math.random() * 20 + 's';
                 particle.style.animationDuration = (Math.random() * 10 + 15) + 's';
                 container.appendChild(particle);
@@ -744,6 +990,13 @@
         function setProgress(percent) {
             const offset = circumference - (percent / 100) * circumference;
             circle.style.strokeDashoffset = offset;
+            
+            const ring = document.querySelector('.progress-ring');
+            if (percent > 0) {
+                ring.classList.add('active');
+            } else {
+                ring.classList.remove('active');
+            }
         }
 
         // ==========================================
@@ -758,18 +1011,18 @@
             
             const btn = document.getElementById('startBtn');
             const buttonText = document.getElementById('buttonText');
+            const metricsGrid = document.getElementById('metricsGrid');
             
             btn.disabled = true;
-            buttonText.innerHTML = '<span class="spinner"></span>';
+            buttonText.innerHTML = '<span class="spinner"></span> Testing...';
             hideError();
             resetUI();
+            metricsGrid.classList.add('active');
             
-            // Variable to hold ping results for final report
             let pingResults = { avg: 0, jitter: 0, lossPercent: 0 };
 
             try {
-                // Stage 1: Ping Test (Latency & Packet Loss)
-                await runTestStage(1, 'Pinging...', async () => {
+                await runTestStage(1, 'Measuring Latency...', async () => {
                     pingResults = await measurePingWithJitter();
                     updateMetric('pingText', pingResults.avg.toFixed(0));
                     updateMetric('jitterText', pingResults.jitter.toFixed(1) + ' ms');
@@ -777,29 +1030,25 @@
                     return pingResults;
                 });
                 
-                // Stage 2: Download Test
-                await runTestStage(2, 'Downloading...', async () => {
+                await runTestStage(2, 'Testing Download...', async () => {
                     const dlSpeed = await measureDownload();
                     updateMetric('downloadText', dlSpeed.toFixed(2));
-                    document.getElementById('mainDisplay').textContent = dlSpeed.toFixed(2);
+                    updateMainDisplay(dlSpeed);
                     return dlSpeed;
                 });
                 
-                // Stage 3: Upload Test
-                await runTestStage(3, 'Uploading...', async () => {
+                await runTestStage(3, 'Testing Upload...', async () => {
                     const ulSpeed = await measureUpload();
                     updateMetric('uploadText', ulSpeed.toFixed(2));
-                    document.getElementById('mainDisplay').textContent = ulSpeed.toFixed(2);
+                    updateMainDisplay(ulSpeed);
                     return ulSpeed;
                 });
                 
-                // Test complete
                 document.getElementById('statusText').textContent = 'Complete';
                 document.getElementById('connectionStatus').textContent = 'Test Complete';
                 buttonText.textContent = 'Test Again';
                 document.getElementById('exportBtn').disabled = false;
                 
-                // Store results
                 state.results = {
                     timestamp: new Date().toISOString(),
                     duration: Date.now() - state.startTime,
@@ -811,6 +1060,8 @@
                         packetLoss: pingResults.lossPercent,
                     }
                 };
+                
+                displayQualityBadge(state.results.metrics);
                 
             } catch (error) {
                 console.error('Test error:', error);
@@ -827,6 +1078,7 @@
             } finally {
                 state.isRunning = false;
                 btn.disabled = false;
+                metricsGrid.classList.remove('active');
                 if (buttonText.querySelector('.spinner')) {
                     buttonText.textContent = 'Test Again';
                 }
@@ -849,7 +1101,7 @@
         }
 
         // ==========================================
-        // PING TEST WITH REAL PACKET LOSS
+        // PING TEST
         // ==========================================
         async function measurePingWithJitter() {
             const pings = [];
@@ -859,11 +1111,8 @@
                 try {
                     const start = performance.now();
                     const controller = new AbortController();
-                    // Short timeout for ping (2s)
                     const timeoutId = setTimeout(() => controller.abort(), 2000);
 
-                    // We ping the current location. If running as a file, this might fail,
-                    // but usually assumes a server environment.
                     await fetch(window.location.href, {
                         method: 'HEAD',
                         cache: 'no-store',
@@ -875,19 +1124,14 @@
                     pings.push(end - start);
                     
                 } catch (error) {
-                    // Count this as a packet loss
                     failedAttempts++;
                     console.warn('Ping attempt failed:', error);
                 }
                 
-                // Update progress bar
                 setProgress(((i + 1) / CONFIG.pingAttempts) * 100);
-                
-                // Small delay between pings
                 await new Promise(resolve => setTimeout(resolve, 100));
             }
             
-            // If all failed, report critical failure
             if (pings.length === 0) {
                 return { avg: 0, jitter: 0, lossPercent: 100 };
             }
@@ -926,15 +1170,14 @@
                         const timeDiff = (currentTime - lastTime) / 1000;
                         const loadedDiff = event.loaded - lastLoaded;
                         
-                        if (timeDiff > 0.1) { // Update every 100ms
+                        if (timeDiff > 0.1) {
                             const instantSpeed = (loadedDiff * 8) / (timeDiff * 1024 * 1024);
                             speeds.push(instantSpeed);
                             
-                            // Moving average for smoother display
                             const recentSpeeds = speeds.slice(-5);
                             const avgSpeed = recentSpeeds.reduce((a, b) => a + b, 0) / recentSpeeds.length;
                             
-                            document.getElementById('mainDisplay').textContent = avgSpeed.toFixed(2);
+                            updateMainDisplay(avgSpeed);
                             
                             lastLoaded = event.loaded;
                             lastTime = currentTime;
@@ -949,8 +1192,7 @@
                     if (xhr.status === 200) {
                         const endTime = performance.now();
                         const duration = (endTime - startTime) / 1000;
-                        // Use actual size received
-                        const speedMbps = (event.loaded * 8) / (duration * 1024 * 1024);
+                        const speedMbps = (size * 8) / (duration * 1024 * 1024);
                         resolve(speedMbps);
                     } else {
                         reject(new Error(`Download failed with status ${xhr.status}`));
@@ -970,19 +1212,17 @@
         }
 
         // ==========================================
-        // UPLOAD TEST (FIXED)
+        // UPLOAD TEST
         // ==========================================
         async function measureUpload() {
             return new Promise((resolve, reject) => {
-                const size = CONFIG.testFileSizes.upload; // 10MB
+                const size = CONFIG.testFileSizes.upload;
                 const data = new Uint8Array(size);
                 
-                // Generate a small chunk of random data (max 64KB allows by browser API)
-                const chunkSize = 65536; 
+                const chunkSize = 65536;
                 const chunk = new Uint8Array(chunkSize);
                 crypto.getRandomValues(chunk);
 
-                // Fill the large buffer by repeating the random chunk
                 for (let i = 0; i < size; i += chunkSize) {
                     const remaining = size - i;
                     const length = Math.min(chunkSize, remaining);
@@ -1011,7 +1251,7 @@
                             const recentSpeeds = speeds.slice(-5);
                             const avgSpeed = recentSpeeds.reduce((a, b) => a + b, 0) / recentSpeeds.length;
                             
-                            document.getElementById('mainDisplay').textContent = avgSpeed.toFixed(2);
+                            updateMainDisplay(avgSpeed);
                             
                             lastLoaded = event.loaded;
                             lastTime = currentTime;
@@ -1031,8 +1271,6 @@
                         if (speedMbps > 0) {
                             resolve(speedMbps);
                         } else {
-                            // If we sent the data but server returned error (e.g. 405 Method Not Allowed),
-                            // we still successfully measured the upload speed capability of the client.
                             resolve(speedMbps);
                         }
                     }
@@ -1062,8 +1300,8 @@
             document.getElementById('mainDisplay').textContent = '0.0';
             document.getElementById('statusText').textContent = 'Testing';
             setProgress(0);
+            document.getElementById('qualityBadgeContainer').innerHTML = '';
             
-            // Reset progress steps
             for (let i = 1; i <= 3; i++) {
                 document.getElementById(`step${i}`).classList.remove('active');
             }
@@ -1072,23 +1310,58 @@
         function updateMetric(elementId, value) {
             const element = document.getElementById(elementId);
             element.textContent = value;
+            element.classList.add('update');
             
-            // Add pulse animation
-            element.style.animation = 'none';
             setTimeout(() => {
-                element.style.animation = 'pulse 0.5s ease-out';
-            }, 10);
+                element.classList.remove('update');
+            }, 500);
+        }
+
+        function updateMainDisplay(value) {
+            const display = document.getElementById('mainDisplay');
+            display.textContent = value.toFixed(2);
+            display.classList.add('pulse');
+            
+            setTimeout(() => {
+                display.classList.remove('pulse');
+            }, 500);
         }
 
         function showError(message) {
             const errorDiv = document.getElementById('errorMessage');
-            errorDiv.textContent = message;
+            const errorText = document.getElementById('errorText');
+            errorText.textContent = message;
             errorDiv.classList.add('show');
         }
 
         function hideError() {
             const errorDiv = document.getElementById('errorMessage');
             errorDiv.classList.remove('show');
+        }
+
+        function displayQualityBadge(metrics) {
+            const container = document.getElementById('qualityBadgeContainer');
+            
+            let quality = 'poor';
+            let qualityText = 'Poor Connection';
+            
+            if (metrics.ping < 50 && metrics.download > 50 && metrics.upload > 10 && metrics.packetLoss < 1) {
+                quality = 'excellent';
+                qualityText = 'Excellent Connection';
+            } else if (metrics.ping < 100 && metrics.download > 25 && metrics.upload > 5 && metrics.packetLoss < 3) {
+                quality = 'good';
+                qualityText = 'Good Connection';
+            } else if (metrics.ping < 150 && metrics.download > 10 && metrics.upload > 2 && metrics.packetLoss < 5) {
+                quality = 'fair';
+                qualityText = 'Fair Connection';
+            }
+            
+            container.innerHTML = `
+                <div class="quality-badge" style="display: flex; justify-content: center;">
+                    <span class="quality-indicator quality-${quality}"></span>
+                    <span>${qualityText}</span>
+                </div>
+            `;
         }
 
         // ==========================================
